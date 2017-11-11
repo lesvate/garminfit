@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans
+	xmlns="http://www.springframework.org/schema/beans"
+
+	xmlns:mvc="http://www.springframework.org/schema/mvc" 
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:task="http://www.springframework.org/schema/task"
+	
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+	
+
+
+
+    <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">  
+            <property name="driverClassName" value="com.mysql.jdbc.Driver" />  
+            <property name="url" value="jdbc:mysql://127.0.0.1:3306/bwg" />  
+            <property name="username" value="bwg" />  
+            <property name="password" value="liulei6127252" />  
+            <!--  <property name="maxActive"> 
+                     <value>255</value> 
+              </property> 
+              <property name="maxIdle"> 
+                     <value>2</value> 
+              </property> 
+              <property name="maxWait"> 
+                     <value>120000</value> 
+              </property> 
+              -->
+        </bean>
+        
+          
+        <bean id="jdbcTemplate"
+        	class="org.springframework.jdbc.core.JdbcTemplate">
+        	<property name="dataSource" ref="dataSource" />
+        </bean>
+     <!-- 
+         <bean id="txManager"
+        	class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        	<property name="dataSource" ref="dataSource" />
+        </bean>
+       
+     
+        <bean id="activitieInitDao" class="com.cmbc.bj.activitie.dao.ActivitieInitDao">
+        	<property name="jdbcTemplate" ref="jdbcTemplate"/>
+        </bean>
+		
+		 <bean id="initService" class="com.cmbc.bj.wx.gateway.service.InitService">
+        	<property name="jdbcTemplate" ref="jdbcTemplate"/>
+        </bean>
+		 -->
+
+
+
+
+
+        
+
+	
+  
+
+</beans>
