@@ -33,7 +33,7 @@ import java.io.InputStream;
  * messages to match the HR data if their times align
  *
  */
-public class HrToRecordReaderExample implements RecordMesgListener, HrMesgListener {
+public class HrToRecordReaderExample implements RecordMesgListener, HrMesgListener,SessionMesgListener {
    private MesgCSVWriter mesgWriter;
 
    public static void main(String[] args) {
@@ -45,16 +45,13 @@ public class HrToRecordReaderExample implements RecordMesgListener, HrMesgListen
       Decode decode = new Decode();
       BufferedMesgBroadcaster mesgBroadcaster = new BufferedMesgBroadcaster(decode);
 
-      if (args.length != 1) {
-         System.out .println("Usage: java -jar FitHrRecordReaderExample.jar <input file>.fit");
-         return;
-      }
+      String file = "c:\\Workouts_17802_2017-10-18-19-8-14.fit";
 
       try {
-         in = new FileInputStream(args[0]);
+         in = new FileInputStream(file);
       }
       catch (java.io.IOException e) {
-         throw new RuntimeException("Error opening file " + args[0]);
+         throw new RuntimeException("Error opening file " + file);
       }
 
       try {
@@ -73,14 +70,15 @@ public class HrToRecordReaderExample implements RecordMesgListener, HrMesgListen
          }
       }
       try {
-         in = new FileInputStream(args[0]);
+         in = new FileInputStream(file);
       } catch (java.io.IOException e) {
-         throw new RuntimeException("Error opening file " + args[0] + " [2]");
+         throw new RuntimeException("Error opening file " + file + " [2]");
       }
 
-      String outputFile = args[0] + "-HrRecordExampleProcessed.csv";
+      String outputFile = file + "-HrRecordExampleProcessed.csv";
       mesgBroadcaster.addListener((RecordMesgListener) example);
       mesgBroadcaster.addListener((HrMesgListener) example);
+      mesgBroadcaster.addListener((SessionMesgListener) example);
 
       try {
          example.mesgWriter = new MesgCSVWriter(outputFile);
@@ -98,7 +96,7 @@ public class HrToRecordReaderExample implements RecordMesgListener, HrMesgListen
          System.err.println(e.getMessage());
       }
 
-      System.out.println("Decoded Record and Hr data from " + args[0] + " to " + outputFile);
+      System.out.println("Decoded Record and Hr data from " + file + " to " + outputFile);
    }
 
    public void onMesg(RecordMesg mesg) {
@@ -108,4 +106,10 @@ public class HrToRecordReaderExample implements RecordMesgListener, HrMesgListen
    public void onMesg(HrMesg mesg) {
       mesgWriter.onMesg(mesg);
    }
+
+@Override
+public void onMesg(SessionMesg mesg) {
+	mesgWriter.onMesg(mesg);
+	
+}
 }
