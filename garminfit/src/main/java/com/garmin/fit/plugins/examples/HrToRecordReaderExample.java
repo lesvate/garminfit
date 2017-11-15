@@ -33,12 +33,12 @@ import java.io.InputStream;
  * messages to match the HR data if their times align
  *
  */
-public class HrToRecordReaderExample implements RecordMesgListener, HrMesgListener,SessionMesgListener {
+public class HrToRecordReaderExample implements RecordMesgListener, HrMesgListener,SessionMesgListener ,DeviceInfoMesgListener{
    private MesgCSVWriter mesgWriter;
 
    public static void main(String[] args) {
       System.out.printf("FIT Hr Record Reader Example Application - Protocol %d.%d Profile %.2f %s\n", Fit.PROTOCOL_VERSION_MAJOR, Fit.PROTOCOL_VERSION_MINOR, Fit.PROFILE_VERSION / 100.0, Fit.PROFILE_TYPE);
-
+      long s1 = System.currentTimeMillis();
       FileInputStream in;
 
       HrToRecordReaderExample example = new HrToRecordReaderExample();
@@ -77,8 +77,8 @@ public class HrToRecordReaderExample implements RecordMesgListener, HrMesgListen
 
       String outputFile = file + "-HrRecordExampleProcessed.csv";
       mesgBroadcaster.addListener((RecordMesgListener) example);
-      mesgBroadcaster.addListener((HrMesgListener) example);
       mesgBroadcaster.addListener((SessionMesgListener) example);
+      mesgBroadcaster.addListener((DeviceInfoMesgListener) example);
 
       try {
          example.mesgWriter = new MesgCSVWriter(outputFile);
@@ -97,6 +97,8 @@ public class HrToRecordReaderExample implements RecordMesgListener, HrMesgListen
       }
 
       System.out.println("Decoded Record and Hr data from " + file + " to " + outputFile);
+      long s2 = System.currentTimeMillis();
+      System.out.println(s2-s1);
    }
 
    public void onMesg(RecordMesg mesg) {
@@ -109,6 +111,12 @@ public class HrToRecordReaderExample implements RecordMesgListener, HrMesgListen
 
 @Override
 public void onMesg(SessionMesg mesg) {
+	mesgWriter.onMesg(mesg);
+	
+}
+
+@Override
+public void onMesg(DeviceInfoMesg mesg) {
 	mesgWriter.onMesg(mesg);
 	
 }

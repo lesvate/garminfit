@@ -36,6 +36,8 @@ import java.util.ArrayList;
 public class BufferedMesgBroadcaster extends MesgBroadcaster{
    private final List<Mesg>                  mesgs;
    private final List<MesgBroadcastPlugin>   plugins;
+   
+   public static String record = "record";
 
    /**
     * Constructor.
@@ -96,11 +98,20 @@ public class BufferedMesgBroadcaster extends MesgBroadcaster{
     *
     */
    public void broadcast() {
+	   int msg = 0;
+	   
       for (final MesgBroadcastPlugin plugin : plugins )
          plugin.onBroadcast(mesgs);
 
-      for (final Mesg mesg : mesgs )
-         super.onMesg(mesg);
+      for (final Mesg mesg : mesgs ) {
+    	  if(mesg.getName().equals(record)) {
+    		  
+    		  msg++;
+    		  if(msg%5!=0) 
+    			  continue;
+    	  }
+    	  super.onMesg(mesg);
+      }
    }
 }
 

@@ -513,7 +513,7 @@ public class Decode {
     */
    public boolean checkFileIntegrity(final InputStream in) {
       boolean status = true;
-
+      long s1 = System.currentTimeMillis();
       try {
          do {
              for ( ; currentByteIndex < bytesRead; currentByteIndex++ ) {
@@ -547,7 +547,8 @@ public class Decode {
          bytesRead = 0;
          currentByteIndex = 0;
       }
-
+      long s2 = System.currentTimeMillis();
+      System.out.println(s2-s1);
       return status;
    }
 

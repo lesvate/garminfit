@@ -116,9 +116,9 @@ public class MesgCSVWriter extends MesgCSVWriterBase implements MesgListener, Me
       }
 
       csv.clear();
-      csv.set("Type", "Data");
+      /*csv.set("Type", "Data");
       csv.set("Local Number", mesg.getLocalNum());
-      csv.set("Message", mesg.getName());
+      csv.set("Message", mesg.getName());*/
 
       if (removeExpandedFields) {
           mesg.removeExpandedFields();
@@ -135,12 +135,14 @@ public class MesgCSVWriter extends MesgCSVWriterBase implements MesgListener, Me
 
          headerNum++;
 
-         csv.set("Field " + headerNum, field.getName(subFieldIndex));
-
-         String value = getValueString(field, subFieldIndex);
-
-         csv.set("Value " + headerNum, value);
-         csv.set("Units " + headerNum, field.getUnits(subFieldIndex));
+//         csv.set("Field " + headerNum, field.getName(subFieldIndex));
+         if(field.getName(subFieldIndex).equals("timestamp")||field.getName(subFieldIndex).equals("distance")) {
+        	 
+        	 String value = getValueString(field, subFieldIndex);
+        	 
+        	 csv.set(field.getName(subFieldIndex), value);
+         }
+//         csv.set("Units " + headerNum, field.getUnits(subFieldIndex));
       }
 
       for (DeveloperField field : mesg.getDeveloperFields()){
